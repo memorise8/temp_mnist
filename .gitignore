@@ -1,3 +1,4 @@
 *.npz
 train/step
 train/project
+.vscode
