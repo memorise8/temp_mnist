@@ -6,13 +6,14 @@ import json
 
 import numpy as np
 
-import keras
-from keras.datasets import mnist
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
-from keras.optimizers import RMSprop
+import tensorflow as tf
+# import keras
+# from keras.datasets import mnist
+# from keras.models import Sequential
+# from keras.layers import Dense, Dropout
+# from keras.optimizers import RMSprop
 
-os.makedirs('/mm/project/model', exist_ok=True)
+os.makedirs('./project/model', exist_ok=True)
 
 batch_size = 128
 num_classes = 10
@@ -44,7 +45,7 @@ except:
 
 print(epochs, activate, dropout)
 
-with np.load("/mm/project/data_in/mnist.npz") as f:
+with np.load("/home/wonjun.sung/repository/2021/test_mnist/input/data_in/mnist.npz") as f:
     x_train, y_train = f['x_train'], f['y_train']
     x_test, y_test = f['x_test'], f['y_test']
 
@@ -63,19 +64,19 @@ print(x_test.shape[0], 'test samples')
 print('here04')
 
 # convert class vectors to binary class matrices
-y_train = keras.utils.to_categorical(y_train, num_classes)
-y_test = keras.utils.to_categorical(y_test, num_classes)
+y_train = tf.keras.utils.to_categorical(y_train, num_classes)
+y_test = tf.keras.utils.to_categorical(y_test, num_classes)
 
-model = Sequential()
-model.add(Dense(hidden, activation='relu', input_shape=(784,)))
-model.add(Dropout(dropout))
-model.add(Dense(hidden, activation='relu'))
-model.add(Dropout(dropout))
-model.add(Dense(num_classes, activation=activate))
+model = tf.keras.Sequential()
+model.add(tf.keras.layers.Dense(hidden, activation='relu', input_shape=(784,)))
+model.add(tf.keras.layers.Dropout(dropout))
+model.add(tf.keras.layers.Dense(hidden, activation='relu'))
+model.add(tf.keras.layers.Dropout(dropout))
+model.add(tf.keras.layers.Dense(num_classes, activation=activate))
 
 model.summary()
 
-model.compile(loss='categorical_crossentropy', optimizer=RMSprop(),metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy', optimizer=tf.keras.optimizers.RMSprop(),metrics=['accuracy'])
 
 print('train on prd')
 history = model.fit(x_train, y_train,
@@ -94,7 +95,7 @@ print(history.history)
 
 arr = []
 for i in range(5):
-    model_path = '/mm/project/model/%s_%s.h5' % (target, "-".join(argv[1:]+[str(i)]))
+    model_path = './project/model/%s_%s.h5' % (target, "-".join(argv[1:]+[str(i)]))
     obj = {}
     obj['target'] = '%s' % (target)
     obj['args'] = " ".join(argv[1:]+[str(i)])
@@ -107,5 +108,5 @@ for i in range(5):
     arr.append(obj)
 
 df = pd.DataFrame(arr)
-df.to_csv('/mm/step/train.csv', index=False)
+df.to_csv('./step/train.csv', index=False)
 
