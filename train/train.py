@@ -14,6 +14,7 @@ import tensorflow as tf
 # from keras.optimizers import RMSprop
 
 os.makedirs('./project/model', exist_ok=True)
+os.makedirs('./step', exist_ok=True)
 
 batch_size = 128
 num_classes = 10
@@ -45,7 +46,7 @@ except:
 
 print(epochs, activate, dropout)
 
-with np.load("/home/wonjun.sung/repository/2021/test_mnist/input/data_in/mnist.npz") as f:
+with np.load("../input/data_in/mnist.npz") as f:
     x_train, y_train = f['x_train'], f['y_train']
     x_test, y_test = f['x_test'], f['y_test']
 
