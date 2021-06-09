@@ -46,10 +46,13 @@ except:
 
 print(epochs, activate, dropout)
 
-with np.load("../input/data_in/mnist.npz") as f:
-    x_train, y_train = f['x_train'], f['y_train']
-    x_test, y_test = f['x_test'], f['y_test']
+# with tf.keras.datasets.mnist.load_data() as f:
+#     x_train, y_train = f['x_train'], f['y_train']
+#     x_test, y_test = f['x_test'], f['y_test']
 
+data_train, data_test = tf.keras.datasets.mnist.load_data()
+(x_train, y_train) = data_train
+(x_test, y_test) = data_test
 
 x_train = x_train.reshape(60000, 784)
 x_train = x_train[:20000]
